@@ -7,6 +7,7 @@ import com.pommert.jedidiah.fractalviewerjava.fractals.GenerationFailedException
 import com.pommert.jedidiah.fractalviewerjava.output.Colour;
 import com.pommert.jedidiah.fractalviewerjava.output.Out;
 
+// a fractal generator for a mandelbrot set
 public class Mandelbrot1Generator extends FractalGenerator {
 
 	float xmin = -3;

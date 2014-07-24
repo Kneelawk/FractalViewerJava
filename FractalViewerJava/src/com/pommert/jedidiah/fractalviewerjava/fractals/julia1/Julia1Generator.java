@@ -5,6 +5,7 @@ import com.pommert.jedidiah.fractalviewerjava.fractals.GenerationFailedException
 import com.pommert.jedidiah.fractalviewerjava.output.Colour;
 import com.pommert.jedidiah.fractalviewerjava.output.Out;
 
+// a fractal generator for a julia set
 public class Julia1Generator extends FractalGenerator {
 
 	float percentDone = 0;
@@ -19,6 +20,8 @@ public class Julia1Generator extends FractalGenerator {
 			throws GenerationFailedException {
 		if (args.length < 1)
 			throwUsage("");
+		
+		// parse arguments
 		float w = Float.parseFloat(args[0]);
 
 		float mx = 0;
@@ -119,15 +122,19 @@ public class Julia1Generator extends FractalGenerator {
 				for (n = 0; n < maxIterations; n++) {
 					float aa = a * a;
 					float bb = b * b;
+					
+					// an attempt at a three sided fractal
 					// float aaa = aa * a;
 					// float bbb = bb * b;
 					// float threeabb = 3.0f * a * bb;
 					// float threeaab = 3.0f * aa * a;
+					
 					float twoab = 2.0f * a * b;
 
 					a = aa - bb + ca;
 					b = twoab + cb;
 
+					// more of the attempt at a three sided fractal
 					// a = aaa - threeabb + ca;
 					// b = threeaab - bbb;
 
@@ -135,6 +142,7 @@ public class Julia1Generator extends FractalGenerator {
 						break;
 				}
 
+				// color the pixel according to the number of times it took the complex number to escape
 				float maxbx = 0, minbx = 0, maxby = 0, minby = 0;
 				if (box) {
 					maxbx = bcx + (bw / 2);

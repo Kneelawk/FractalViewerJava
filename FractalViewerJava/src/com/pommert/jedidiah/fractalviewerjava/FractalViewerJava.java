@@ -17,6 +17,7 @@ public class FractalViewerJava {
 
 	public static void main(String[] args) {
 		try {
+			// add the current directory to the java library path
 			try {
 				addLibraryDir(new File(FractalViewerJava.class
 						.getProtectionDomain().getCodeSource().getLocation()
@@ -30,6 +31,8 @@ public class FractalViewerJava {
 			boolean hasSeed = false;
 			String[] extraArgs = new String[0];
 
+			// if the first argument is "--list" then print a list of the
+			// available fractal generators
 			if (args.length > 0) {
 				if (args[0].equalsIgnoreCase("--list")) {
 					System.out.println(Arrays
@@ -41,13 +44,17 @@ public class FractalViewerJava {
 				}
 			}
 
+			// print the program usage if the number of arguments is less than 3
 			if (args.length < 3) {
 				throwUsage("");
 			}
 
+			// parse the image width and height
 			width = Integer.parseInt(args[0]);
 			height = Integer.parseInt(args[1]);
 
+			// parse additional arguments like the generator type, name, and
+			// seed
 			if (args.length > 2) {
 				for (int index = 2; index < args.length; index++) {
 					if (args[index].equalsIgnoreCase("-s")) {
@@ -73,16 +80,23 @@ public class FractalViewerJava {
 					}
 				}
 			}
+
+			// print some info on the generator arguments
 			System.out
 					.printf("Fractal Engine: %s, width: %d, height %d, name: %s, has seed: %b, seed: %d, engine spacific args: %s\n",
 							engine, width, height, addName, hasSeed, seed,
 							Arrays.toString(extraArgs));
+			// init Out (adds outputs like the image output to the list of
+			// outputs)
 			Out.init(width, height);
+			// get the fractal generator with the specified engine name
 			gen = FractalGenerator.getFractalGenerator(engine);
 			if (gen == null) {
 				System.err.println("No fractal engine called: " + engine);
 				return;
 			}
+
+			// start an info thread (prints percent done generating and saving)
 			running = true;
 			new Thread(new Runnable() {
 				@Override
@@ -98,6 +112,8 @@ public class FractalViewerJava {
 					}
 				}
 			}).start();
+
+			// generate the fractal
 			System.out.println("Generating...");
 			String name;
 			try {
@@ -117,12 +133,18 @@ public class FractalViewerJava {
 				throw new RuntimeException(t);
 			}
 			System.out.println("Done generating.");
+
+			// collect garbage
 			System.out.println("Collecting garbage...");
 			System.gc();
 			System.out.println("Done collecting garbage.");
+
+			// save the image
 			System.out.println("Saving...");
 			Out.finish((addName != null && !addName.equals("") ? addName + " "
 					: "") + name + " " + width + "x" + height);
+
+			// stop the info thread
 			running = false;
 			System.out.println("Done.");
 		} catch (IllegalArgumentException iae) {
