@@ -15,6 +15,8 @@ public class FractalViewerJava {
 
 	protected static boolean running = false;
 
+	public static boolean display = false;
+
 	public static void main(String[] args) {
 		try {
 			// add the current directory to the java library path
@@ -70,6 +72,8 @@ public class FractalViewerJava {
 						} else {
 							throwUsage("-n is followed by a name!\n");
 						}
+					} else if (args[index].equalsIgnoreCase("-d")) {
+						display = true;
 					} else {
 						engine = args[index];
 						if (args.length > index + 1) {
@@ -186,6 +190,7 @@ public class FractalViewerJava {
 		throw new IllegalArgumentException(
 				message
 						+ "\nUsage: --list\tList fractal engines.\n"
-						+ "Usage: <width> <height> [-n <name>] [-s <seed>] <fractal engine> [<engine spacific arguments>]");
+						+ "Usage: <width> <height>[ -n <name>][ -s <seed>][ -d] <fractal engine> [<engine spacific arguments>]\n"
+						+ "The -d option will enable a window displaying the fractal in generation.");
 	}
 }
